@@ -439,7 +439,7 @@ public(package) fun inner_for_testing(staking: &Staking): &StakingInnerV1 {
 }
 
 #[test_only]
-public(package) fun new_for_testing(ctx: &mut TxContext): Staking {
+public fun new_for_testing(ctx: &mut TxContext): Staking {
     let clock = clock::create_for_testing(ctx);
     let mut staking = Staking {
         id: object::new(ctx),
@@ -447,9 +447,14 @@ public(package) fun new_for_testing(ctx: &mut TxContext): Staking {
         package_id: new_id(ctx),
         new_package_id: option::none(),
     };
-    df::add(&mut staking.id, VERSION, staking_inner::new(0, 10, 1000, &clock, ctx));
+    df::add(&mut staking.id, VERSION, staking_inner::new(0, 1_209_600_000, 1000, &clock, ctx));
     clock.destroy_for_testing();
     staking
+}
+
+#[test_only]
+public fun share_staking_for_testing(self: Staking) {
+    transfer::share_object(self);
 }
 
 #[test_only]

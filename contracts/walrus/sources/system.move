@@ -61,6 +61,15 @@ public(package) fun advance_epoch(
     self.inner_mut().advance_epoch(new_committee, new_epoch_params)
 }
 
+#[test_only]
+public fun advance_epoch_for_testing(
+    self: &mut System,
+    new_committee: BlsCommittee,
+    new_epoch_params: &EpochParams,
+): VecMap<ID, Balance<WAL>> {
+    self.inner_mut().advance_epoch(new_committee, new_epoch_params)
+}
+
 /// === Public Functions ===
 
 /// Marks blob as invalid given an invalid blob certificate.
@@ -362,6 +371,11 @@ public(package) fun new_for_testing_with_multiple_members(ctx: &mut TxContext): 
     let system_state_inner = system_state_inner::new_for_testing_with_multiple_members(ctx);
     dynamic_field::add(&mut system.id, VERSION, system_state_inner);
     system
+}
+
+#[test_only]
+public fun share_system_for_testing(self: System) {
+    transfer::share_object(self);
 }
 
 #[test_only]

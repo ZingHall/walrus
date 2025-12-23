@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /// The WAL token is the native token for the Walrus Protocol.
-#[allow(deprecated_usage)]
 module wal::wal;
 
 use sui::{coin::{Self, TreasuryCap, Coin}, dynamic_object_field as dof, url};

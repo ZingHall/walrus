@@ -339,6 +339,22 @@ public(package) fun committee_mut(self: &mut System): &mut BlsCommittee {
 }
 
 #[test_only]
+public fun advance_epoch_for_testing(
+    self: &mut System,
+    new_committee: BlsCommittee,
+    new_epoch_params: &EpochParams,
+): VecMap<ID, Balance<WAL>> {
+    self.advance_epoch(new_committee, new_epoch_params)
+}
+
+#[test_only]
+public fun share_system_for_testing(
+    self: System,
+){
+    transfer::share_object(self);
+}
+
+#[test_only]
 public fun new_for_testing(ctx: &mut TxContext): System {
     let mut system = System {
         id: object::new(ctx),
