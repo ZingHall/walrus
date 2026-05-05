@@ -1,10 +1,12 @@
+> For the complete documentation index, see [llms.txt](https://docs.wal.app/llms.txt)
+
 ## SDKs maintained by Mysten Labs
 
 Mysten Labs has built and published a [Walrus TypeScript SDK](https://sdk.mystenlabs.com/walrus), which supports a wide variety of operations. See also the related [examples](https://github.com/MystenLabs/ts-sdks/tree/main/packages/walrus/examples).
 
 The Walrus core team is actively working on a Rust SDK for Walrus.
 
-For data security, use the [TypeScript SDK](https://www.npmjs.com/package/@mysten/seal) for Seal. It provides threshold encryption and on-chain access control for decentralized data protection. Also, refer to [data security](/docs/data-security) for details.
+For data security, use the [TypeScript SDK](https://www.npmjs.com/package/@mysten/seal) for Seal. It provides threshold encryption and onchain access control for decentralized data protection. Also, refer to [data security](/docs/data-security) for details.
 
 ## Community-maintained SDKs
 

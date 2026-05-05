@@ -1,17 +1,17 @@
-{/* https://linear.app/mysten-labs/issue/DOCS-633/system-overviewstorage-costs */}
+> For the complete documentation index, see [llms.txt](https://docs.wal.app/llms.txt)
 
 Storing blobs on Walrus Mainnet incurs 2 separate costs:
 
-- **WAL** for the storage operation. See [WAL tokenomics](https://www.walrus.xyz/wal-token) and the [Walrus delegated proof of stake system](/walrus.pdf) for more details.
+- **WAL** for the storage operation. You pay per storage unit per epoch. In other words, the cost scales with blob size and epoch. Run `walrus info` to see current pricing, including the price per encoded storage unit and the additional write fee. See [WAL tokenomics](https://www.walrus.xyz/wal-token) and the [Walrus delegated proof of stake system](/walrus.pdf) for more details.
 
-- **SUI** for executing transactions on Sui Mainnet. See [SUI tokenomics](https://docs.sui.io/concepts/tokenomics) and [SUI gas fee calculation](https://docs.sui.io/concepts/tokenomics/gas-in-sui) for more details.
+- **SUI** for executing transactions on Sui Mainnet. Each operation that interacts with the Sui blockchain (registering a blob, posting a certificate, extending storage) incurs a gas fee in SUI. See [SUI tokenomics](https://docs.sui.io/concepts/tokenomics) and [SUI gas fee calculation](https://docs.sui.io/concepts/tokenomics/gas-in-sui) for more details.
 
-:::caution
-
-There are plans to stabilize costs to USD so that storage fees are not subject to WAL fluctuations.
-
-:::
-
+> **Tip**
+>
+> Walrus uses erasure coding with approximately 5x expansion. The storage cost shown by `walrus info` accounts for this. You do not need to calculate the expansion yourself.
+> **Caution**
+>
+> There are plans to stabilize costs to USD so that storage fees are not subject to WAL fluctuations.
 ## Cost calculator
 
 Use the [Walrus Cost Calculator](https://costcalculator.wal.app/) to estimate total storage costs interactively.
@@ -34,7 +34,7 @@ Registering a blob costs WAL to cover upload costs. This ensures that deleting b
 
 #### Sui transaction fees
 
-Storing a blob involves up to 3 on-chain [Sui transactions](https://docs.sui.io/concepts/transactions), each of which incurs SUI gas fees.
+Storing a blob involves up to 3 onchain [Sui transactions](https://docs.sui.io/concepts/transactions), each of which incurs SUI gas fees.
 
 1. Acquiring a storage resource (`reserve_space`)
 
@@ -44,7 +44,7 @@ Storing a blob involves up to 3 on-chain [Sui transactions](https://docs.sui.io/
 
 #### Sui object storage
 
-Walrus blobs are represented as [Sui objects](https://docs.sui.io/guides/developer/objects/object-model) on-chain. Creating these objects deposits SUI into the [Sui storage fund](https://docs.sui.io/concepts/sui-architecture/sui-storage#storage-fund), most of which is refunded when you delete the objects.
+Walrus blobs are represented as [Sui objects](https://docs.sui.io/guides/developer/objects/object-model) onchain. Creating these objects deposits SUI into the [Sui storage fund](https://docs.sui.io/concepts/sui-architecture/sui-storage#storage-fund), most of which is refunded when you delete the objects.
 
 ## Measuring costs
 
@@ -86,11 +86,11 @@ After acquiring storage, assign a blob ID to indicate intent to store. This emit
 
 #### Certifying availability
 
-After uploading blob data off-chain, certify availability on-chain:
+After uploading blob data off-chain, certify availability onchain:
 
 1. Upload blob slivers to storage nodes off-chain.
 2. Receive an availability certificate from storage nodes.
-3. Upload the certificate on-chain.
+3. Upload the certificate onchain.
 4. The system checks the certificate against the current Walrus committee.
 5. If valid, the system emits an availability event for the blob ID.
 
@@ -102,7 +102,7 @@ You can extend a certified blob's storage at any time by attaching a storage obj
 
 #### Handling inconsistent blobs
 
-If a blob ID is not correctly encoded, an [inconsistency proof certificate](/docs/system-overview/red-stuff) can be submitted on-chain. This emits an inconsistent blob event, signaling that reads for that blob ID always return `None` and that storage nodes can delete its slivers (except for an indicator to return `None`).
+If a blob ID is not correctly encoded, an [inconsistency proof certificate](/docs/system-overview/red-stuff) can be submitted onchain. This emits an inconsistent blob event, signaling that reads for that blob ID always return `None` and that storage nodes can delete its slivers (except for an indicator to return `None`).
 
 ## Acquiring storage resources
 
@@ -119,6 +119,14 @@ You can acquire storage resources through 3 methods:
 #### Reducing costs for small blobs with Quilt
 
 [Walrus Quilt](/docs/system-overview/quilt) is a batch storage tool that amortizes metadata costs across multiple blobs stored together. It can also significantly reduce Sui computation and storage costs.
+
+Use Quilt when you are storing many small files such as JSON metadata, thumbnails, or configuration files. The savings come from amortizing a single transaction fee and storage reservation across all items in the batch.
+
+Trade-offs to consider:
+
+- Quilt adds complexity to your application's storage and retrieval logic.
+
+For details, see [Batch Storage with Quilt](/docs/system-overview/quilt).
 
 #### Buy storage resources in bulk
 
