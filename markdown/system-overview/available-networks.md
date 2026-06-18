@@ -2,6 +2,9 @@
 
 Walrus Mainnet operates a production-quality storage network using corresponding resources on the Sui Mainnet. The Walrus Testnet operates in conjunction with the Sui Testnet and is used to test new features before they graduate to Mainnet. Alternatively, developers can operate a local instance of both Walrus and Sui for personalized testing.
 
+> **Info**
+>
+> The [Network Reference](/docs/network-reference) is the canonical source for Walrus endpoints, package IDs, system and staking object IDs, token units, and configuration snippets. This page summarizes the same values with setup context. If a value here differs, the Network Reference is authoritative.
 ## Network parameters
 
 Important fixed system parameters for Mainnet and Testnet are summarized in the following table:
@@ -76,9 +79,11 @@ communication_config:
 
 You can find the current Testnet package IDs in the `Move.lock` files in the subdirectories of the [`testnet-contracts` directory on GitHub](https://github.com/MystenLabs/walrus/tree/main/testnet-contracts).
 
-## Testnet WAL faucet
+## Exchange Testnet SUI for WAL {#testnet-wal-faucet}
 
 The Walrus Testnet uses Testnet WAL tokens for buying storage and staking. Testnet WAL tokens have no value and can be exchanged at a 1:1 rate for Testnet SUI tokens, which also have no value.
+
+Use the official WAL exchange flow on this page for Testnet WAL. Third-party faucets can distribute WAL from a package the Walrus client does not accept.
 
 #### Prerequisites: Sui wallet and Testnet SUI {#prerequisites}
 
